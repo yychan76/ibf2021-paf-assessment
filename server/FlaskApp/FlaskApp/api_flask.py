@@ -42,6 +42,7 @@ def get_history(stock_name):
     # get request params
     period = request.args.get("period")
     interval = request.args.get("interval")
+    # start and end are in format YYYY-MM-DD
     start = request.args.get("start")
     end = request.args.get("end")
     kwargs = dict(period=period, interval=interval, start=start, end=end)
