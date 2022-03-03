@@ -19,19 +19,19 @@ def get_info(stock_name):
 def get_actions(stock_name):
     """Returns dividends and stock splits for a given stock_name
     """
-    return get_ticker(stock_name).actions.to_json()
+    return get_ticker(stock_name).actions.to_dict()
 
 
 def get_splits(stock_name):
     """Returns stock splits for a given stock_name
     """
-    return get_ticker(stock_name).splits.to_json()
+    return get_ticker(stock_name).splits.to_dict()
 
 
 def get_dividends(stock_name):
     """Returns dividends for a given stock_name
     """
-    return get_ticker(stock_name).dividends.to_json()
+    return get_ticker(stock_name).dividends.to_dict()
 
 
 def get_history(
@@ -55,6 +55,9 @@ def get_history(
     prepost: Include Pre and Post market data in results
     auto_adjust: Adjust all OHLC automatically
     actions: Download stock dividends and stock splits events
+
+    Returns:
+    dict
     """
     return (
         get_ticker(stock_name)
@@ -67,7 +70,7 @@ def get_history(
             auto_adjust=auto_adjust,
             actions=actions,
         )
-        .to_json()
+        .to_dict()
     )
 
 
