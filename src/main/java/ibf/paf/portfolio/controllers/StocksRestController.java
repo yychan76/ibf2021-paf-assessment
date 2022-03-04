@@ -6,11 +6,13 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ibf.paf.portfolio.models.QuerySymbolsResult;
+import ibf.paf.portfolio.services.StockDataService;
 import ibf.paf.portfolio.services.SymbolSearchService;
 import reactor.core.publisher.Mono;
 
@@ -22,6 +24,9 @@ public class StocksRestController {
     @Autowired
     SymbolSearchService searchService;
 
+    @Autowired
+    StockDataService dataService;
+
     @GetMapping("query")
     public Mono<QuerySymbolsResult> getSymbols(@RequestParam(required = false) String keywords) {
         LOG.info(() -> "Keywords: " + keywords);
@@ -31,5 +36,11 @@ public class StocksRestController {
                     return result.isEmpty() ? new QuerySymbolsResult(Collections.emptyList())
                             : new QuerySymbolsResult(result);
                 });
+    }
+
+    @GetMapping("info/{stockName}")
+    public Mono<String> getStockInfo(@PathVariable String stockName) {
+        // just passthrough the results from the flask query without going through a POJO
+        return dataService.passThroughStockInfo(stockName);
     }
 }
