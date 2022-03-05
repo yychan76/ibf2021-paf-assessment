@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ibf.paf.portfolio.models.Dividend;
 import ibf.paf.portfolio.models.Price;
 import ibf.paf.portfolio.models.QuerySymbolsResult;
 import ibf.paf.portfolio.services.StockDataService;
@@ -67,5 +68,13 @@ public class StocksRestController {
             return dataService.getPrices(stockName, (period != null) ? period : "max", interval)
                     .doOnNext(result -> LOG.info(() -> LOG_PREFIX_PRICE_SEARCH + result.toString()));
         }
+    }
+
+    @GetMapping("dividends/{stockName}")
+    public Mono<List<Dividend>> getDividends(@PathVariable String stockName) {
+        final String LOG_PREFIX_DIVIDEND_SEARCH = "Dividend search result: ";
+
+        return dataService.getDividends(stockName)
+                .doOnNext(result -> LOG.info(() -> LOG_PREFIX_DIVIDEND_SEARCH + result.toString()));
     }
 }

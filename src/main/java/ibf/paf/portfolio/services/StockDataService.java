@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import ibf.paf.portfolio.models.Dividend;
 import ibf.paf.portfolio.models.Price;
 import reactor.core.publisher.Mono;
 
@@ -155,6 +156,45 @@ public class StockDataService {
                                     }
 
                                     return new Price(open, close, low, high, volume, timestamp, datetime);
+                                })
+                                .toList()))
+                .log();
+    }
+
+    public Mono<List<Dividend>> getDividends(String stockName) {
+        return this.webClient.get()
+                .uri(uriBuilder -> {
+                    URI uri = uriBuilder
+                            .path("/dividends/{stock}")
+                            .build(stockName);
+                    LOG.info(() -> LOG_PREFIX_FLASK_SEARCH + uri.toString());
+                    return uri;
+                })
+                .retrieve()
+                .bodyToMono(JsonNode.class)
+                .map(json -> json.path("dividends"))
+                .flatMap(jsonArr -> Mono.just(
+                        // iterate through each element of the dividends array and convert into stream
+                        StreamSupport.stream(jsonArr.spliterator(), false)
+                                .map(item -> {
+                                    // custom mapping to Dividend field to convert data type
+                                    // LOG.info(() -> "item: " + item);
+                                    float value = item.get("value").floatValue();
+                                    BigDecimal timestamp = BigDecimal.valueOf(item.get("timestamp").doubleValue());
+                                    ZonedDateTime datetime;
+
+                                    try {
+                                        datetime = ZonedDateTime.parse(item.get("date").asText(),
+                                                DateTimeFormatter.ISO_DATE_TIME);
+                                    } catch (DateTimeParseException e) {
+                                        // couldn't parse to a ZoneDateTime, try LocalDateTime
+                                        LocalDateTime dt = LocalDateTime.parse(item.get("date").asText(),
+                                                DateTimeFormatter.ISO_DATE_TIME);
+                                        // convert to a timezone
+                                        datetime = dt.atZone(ZoneId.of("UTC"));
+                                    }
+
+                                    return new Dividend(value, timestamp, datetime);
                                 })
                                 .toList()))
                 .log();
