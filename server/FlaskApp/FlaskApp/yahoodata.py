@@ -77,6 +77,7 @@ def get_history(
             auto_adjust=auto_adjust,
             actions=actions,
         )
+        .fillna(0)
         .to_dict()
     )
 
