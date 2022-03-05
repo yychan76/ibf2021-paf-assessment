@@ -76,7 +76,7 @@ public class UsersRestController {
                     .writeValueAsString(Collections.singletonMap("response", "User: %d created".formatted(uId))));
         } catch (SQLException | DuplicateKeyException e) {
             return ResponseEntity.unprocessableEntity()
-                    .body(jsonMapper.writeValueAsString(Collections.singletonMap("response", e.getMessage())));
+                    .body(jsonMapper.writeValueAsString(Collections.singletonMap("error", e.getMessage())));
         }
 
     }
@@ -91,7 +91,7 @@ public class UsersRestController {
                     .writeValueAsString((Collections.singletonMap("response", "User: %d updated".formatted(uId)))));
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(jsonMapper
-                    .writeValueAsString(Collections.singletonMap("response", "User: %d update fail".formatted(uId))));
+                    .writeValueAsString(Collections.singletonMap("error", "User: %d update fail".formatted(uId))));
         }
     }
 
@@ -104,7 +104,7 @@ public class UsersRestController {
                     .writeValueAsString(Collections.singletonMap("response", "User: %d deleted".formatted(uId))));
         } else {
             return ResponseEntity.internalServerError().body(jsonMapper
-                    .writeValueAsString(Collections.singletonMap("response", "User: %d delete fail".formatted(uId))));
+                    .writeValueAsString(Collections.singletonMap("error", "User: %d delete fail".formatted(uId))));
         }
     }
 }
