@@ -22,6 +22,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import ibf.paf.portfolio.models.Dividend;
 import ibf.paf.portfolio.models.Price;
+import ibf.paf.portfolio.models.Split;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -195,6 +196,45 @@ public class StockDataService {
                                     }
 
                                     return new Dividend(value, timestamp, datetime);
+                                })
+                                .toList()))
+                .log();
+    }
+
+    public Mono<List<Split>> getSplits(String stockName) {
+        return this.webClient.get()
+                .uri(uriBuilder -> {
+                    URI uri = uriBuilder
+                            .path("/splits/{stock}")
+                            .build(stockName);
+                    LOG.info(() -> LOG_PREFIX_FLASK_SEARCH + uri.toString());
+                    return uri;
+                })
+                .retrieve()
+                .bodyToMono(JsonNode.class)
+                .map(json -> json.path("splits"))
+                .flatMap(jsonArr -> Mono.just(
+                        // iterate through each element of the splits array and convert into stream
+                        StreamSupport.stream(jsonArr.spliterator(), false)
+                                .map(item -> {
+                                    // custom mapping to Split field to convert data type
+                                    // LOG.info(() -> "item: " + item);
+                                    float value = item.get("value").floatValue();
+                                    BigDecimal timestamp = BigDecimal.valueOf(item.get("timestamp").doubleValue());
+                                    ZonedDateTime datetime;
+
+                                    try {
+                                        datetime = ZonedDateTime.parse(item.get("date").asText(),
+                                                DateTimeFormatter.ISO_DATE_TIME);
+                                    } catch (DateTimeParseException e) {
+                                        // couldn't parse to a ZoneDateTime, try LocalDateTime
+                                        LocalDateTime dt = LocalDateTime.parse(item.get("date").asText(),
+                                                DateTimeFormatter.ISO_DATE_TIME);
+                                        // convert to a timezone
+                                        datetime = dt.atZone(ZoneId.of("UTC"));
+                                    }
+
+                                    return new Split(value, timestamp, datetime);
                                 })
                                 .toList()))
                 .log();

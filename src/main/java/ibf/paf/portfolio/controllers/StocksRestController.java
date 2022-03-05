@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ibf.paf.portfolio.models.Dividend;
 import ibf.paf.portfolio.models.Price;
 import ibf.paf.portfolio.models.QuerySymbolsResult;
+import ibf.paf.portfolio.models.Split;
 import ibf.paf.portfolio.services.StockDataService;
 import ibf.paf.portfolio.services.SymbolSearchService;
 import reactor.core.publisher.Mono;
@@ -76,5 +77,13 @@ public class StocksRestController {
 
         return dataService.getDividends(stockName)
                 .doOnNext(result -> LOG.info(() -> LOG_PREFIX_DIVIDEND_SEARCH + result.toString()));
+    }
+
+    @GetMapping("splits/{stockName}")
+    public Mono<List<Split>> getSplits(@PathVariable String stockName) {
+        final String LOG_PREFIX_SPLIT_SEARCH = "Split search result: ";
+
+        return dataService.getSplits(stockName)
+                .doOnNext(result -> LOG.info(() -> LOG_PREFIX_SPLIT_SEARCH + result.toString()));
     }
 }
