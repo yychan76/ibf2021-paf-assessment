@@ -25,14 +25,21 @@ def get_actions(stock_name):
 def get_splits(stock_name):
     """Returns stock splits for a given stock_name
     """
-    return get_ticker(stock_name).splits.to_dict()
+    try:
+        return get_ticker(stock_name).splits.to_dict()
+    except AttributeError:
+        # if there are no results the ticker returns an empty list, so return empty dict
+        return {}
 
 
 def get_dividends(stock_name):
     """Returns dividends for a given stock_name
     """
-    return get_ticker(stock_name).dividends.to_dict()
-
+    try:
+        return get_ticker(stock_name).dividends.to_dict()
+    except AttributeError:
+        # if there are no results the ticker returns an empty list, so return empty dict
+        return {}
 
 def get_history(
     stock_name,
