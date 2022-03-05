@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ibf.paf.portfolio.models.ShareCounter;
 import ibf.paf.portfolio.models.Watchlist;
 import ibf.paf.portfolio.repositories.PortfolioDBRepository;
 
@@ -36,5 +37,21 @@ public class WatchlistService {
 
     public boolean deleteWatchlist(final int wId) {
         return portfolioRepo.deleteWatchlist(wId);
+    }
+
+    public List<ShareCounter> getAllWatchlistStocks(final int wId) {
+        return portfolioRepo.getAllWatchlistStocks(wId);
+    }
+
+    public Optional<ShareCounter> getWatchlistStockById(final int wsId) {
+        return portfolioRepo.getWatchlistStockById(wsId);
+    }
+
+    public int addWatchlistStock(final int wId, final ShareCounter shareCounter) throws SQLException {
+        return portfolioRepo.addWatchlistStock(wId, shareCounter);
+    }
+
+    public boolean deleteWatchlistStock(final int wsId) {
+        return portfolioRepo.deleteWatchlistStock(wsId);
     }
 }

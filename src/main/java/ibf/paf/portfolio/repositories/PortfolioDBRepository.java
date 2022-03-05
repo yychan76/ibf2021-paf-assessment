@@ -18,6 +18,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import ibf.paf.portfolio.models.CreateUserForm;
+import ibf.paf.portfolio.models.ShareCounter;
 import ibf.paf.portfolio.models.UserProfile;
 import ibf.paf.portfolio.models.Watchlist;
 
@@ -27,6 +28,8 @@ public class PortfolioDBRepository {
 
     @Autowired
     JdbcTemplate template;
+
+    // # Users
 
     public List<UserProfile> getAllUsers() {
         final List<UserProfile> users = new LinkedList<>();
@@ -85,6 +88,8 @@ public class PortfolioDBRepository {
         return deleted > 0;
     }
 
+    // # Watchlists
+
     public List<Watchlist> getAllWatchlists(final int uId) {
         final List<Watchlist> watchlists = new LinkedList<>();
 
@@ -106,7 +111,8 @@ public class PortfolioDBRepository {
         return Optional.empty();
     }
 
-    // the resource path uId should be respected, instead of reading the value from the request body
+    // the resource path uId should be respected, instead of reading the value from
+    // the request body
     public int addWatchlist(final int uId, final Watchlist watchlist) throws SQLException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -136,6 +142,54 @@ public class PortfolioDBRepository {
 
     public boolean deleteWatchlist(final int wId) {
         int deleted = template.update(SQL_WATCHLIST_DELETE_BY_ID, wId);
+        return deleted > 0;
+    }
+
+    // # Watchlist Stocks
+    public List<ShareCounter> getAllWatchlistStocks(final int wId) {
+        final List<ShareCounter> watchStocks = new LinkedList<>();
+
+        final SqlRowSet rs = template.queryForRowSet(SQL_USER_WATCHLIST_STOCK_SELECT_ALL, wId);
+
+        while (rs.next()) {
+            ShareCounter watchStock = ShareCounter.populate(rs);
+            watchStocks.add(watchStock);
+        }
+        return watchStocks;
+    }
+
+    public Optional<ShareCounter> getWatchlistStockById(final int wsId) {
+        final SqlRowSet rs = template.queryForRowSet(SQL_USER_WATCHLIST_STOCK_SELECT_BY_ID, wsId);
+
+        if (rs.next()) {
+            return Optional.ofNullable(ShareCounter.populate(rs));
+        }
+        return Optional.empty();
+    }
+
+    // the resource path wId should be respected, instead of reading the value from
+    // the request body
+    public int addWatchlistStock(final int wId, final ShareCounter watchStock) throws SQLException {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        template.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(SQL_USER_WATCHLIST_STOCK_INSERT,
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, watchStock.getSymbol());
+            ps.setInt(2, wId);
+            return ps;
+        }, keyHolder);
+
+        try {
+            return keyHolder.getKey().intValue();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            throw new SQLException(e);
+        }
+    }
+
+    public boolean deleteWatchlistStock(final int wsId) {
+        int deleted = template.update(SQL_WATCHLIST_STOCK_DELETE_BY_ID, wsId);
         return deleted > 0;
     }
 }

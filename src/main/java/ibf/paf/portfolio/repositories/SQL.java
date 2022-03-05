@@ -16,4 +16,8 @@ public class SQL {
     public static final String SQL_USER_WATCHLIST_INSERT = "INSERT INTO watchlist (w_name, u_id) VALUES (?, ?)";
     public static final String SQL_WATCHLIST_UPDATE_BY_ID = "UPDATE watchlist SET w_name = ? WHERE w_id = ?";
     public static final String SQL_WATCHLIST_DELETE_BY_ID = "DELETE FROM watchlist WHERE w_id = ?";
+    public static final String SQL_USER_WATCHLIST_STOCK_SELECT_ALL = "SELECT * FROM watchlist_stock WHERE w_id = ?";
+    public static final String SQL_USER_WATCHLIST_STOCK_SELECT_BY_ID = "SELECT * FROM watchlist_stock WHERE ws_id = ?";
+    public static final String SQL_USER_WATCHLIST_STOCK_INSERT = "INSERT INTO watchlist_stock (symbol, w_id) VALUES (?, ?)";
+    public static final String SQL_WATCHLIST_STOCK_DELETE_BY_ID = "DELETE FROM watchlist_stock WHERE ws_id = ?";
 }
