@@ -2,13 +2,13 @@ package ibf.paf.portfolio;
 
 public class Constants {
 
-    private Constants() {
-        throw new IllegalStateException("Utility class");
-      }
+  private Constants() {
+    throw new IllegalStateException("Utility class");
+  }
 
-    public static final String API_URL_SEARCH = "https://alpha-vantage.p.rapidapi.com";
-    public static final String HOST_SEARCH = "alpha-vantage.p.rapidapi.com";
-    public static final String ENV_SEARCH_KEY = "RAPIDAPI_KEY";
-    public static final String API_URL_FLASK = "http://159.223.59.64/api";
-    public static final int WEB_CLIENT_MAX_BUFFER_MB = 20 * 1024 * 1024;
+  public static final String API_URL_SEARCH = "https://alpha-vantage.p.rapidapi.com";
+  public static final String HOST_SEARCH = "alpha-vantage.p.rapidapi.com";
+  public static final String ENV_SEARCH_KEY = "RAPIDAPI_KEY";
+  public static final String API_URL_FLASK = "http://159.223.59.64/api";
+  public static final int WEB_CLIENT_MAX_BUFFER_MB = 20 * 1024 * 1024;
 }
