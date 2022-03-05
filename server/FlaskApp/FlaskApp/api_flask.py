@@ -20,7 +20,7 @@ def get_info(stock_name):
 def get_splits(stock_name):
     result = yd.get_splits(stock_name)
     items = [
-        dict(date=str(k.to_pydatetime()), timestamp=k.timestamp(), value=v)
+        dict(date=k.to_pydatetime().isoformat(), timestamp=k.timestamp(), value=v)
         for k, v in result.items()
     ]
     return dict(splits=items, count=len(items))
@@ -30,7 +30,7 @@ def get_splits(stock_name):
 def get_dividends(stock_name):
     result = yd.get_dividends(stock_name)
     items = [
-        dict(date=str(k.to_pydatetime()), timestamp=k.timestamp(), value=v)
+        dict(date=k.to_pydatetime().isoformat(), timestamp=k.timestamp(), value=v)
         for k, v in result.items()
     ]
     return dict(dividends=items, count=len(items))
@@ -55,7 +55,7 @@ def get_history(stock_name):
     # reorganise results to array of prices dicts
     items = [
         dict(
-            date=str(timestamp.to_pydatetime()),
+            date=timestamp.to_pydatetime().isoformat(),
             timestamp=timestamp.timestamp(),
             open=open_,
             high=high,
