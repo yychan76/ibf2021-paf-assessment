@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import ibf.paf.portfolio.models.CreateUserForm;
 import ibf.paf.portfolio.models.UserProfile;
+import ibf.paf.portfolio.models.Watchlist;
 
 @Repository
 public class PortfolioDBRepository {
@@ -81,6 +82,60 @@ public class PortfolioDBRepository {
 
     public boolean deleteUser(final int uId) {
         int deleted = template.update(SQL_USER_DELETE_BY_ID, uId);
+        return deleted > 0;
+    }
+
+    public List<Watchlist> getAllWatchlists(final int uId) {
+        final List<Watchlist> watchlists = new LinkedList<>();
+
+        final SqlRowSet rs = template.queryForRowSet(SQL_USER_WATCHLIST_SELECT_ALL, uId);
+
+        while (rs.next()) {
+            Watchlist watchlist = Watchlist.populate(rs);
+            watchlists.add(watchlist);
+        }
+        return watchlists;
+    }
+
+    public Optional<Watchlist> getWatchlistById(final int wId) {
+        final SqlRowSet rs = template.queryForRowSet(SQL_USER_WATCHLIST_SELECT_BY_ID, wId);
+
+        if (rs.next()) {
+            return Optional.ofNullable(Watchlist.populate(rs));
+        }
+        return Optional.empty();
+    }
+
+    // the resource path uId should be respected, instead of reading the value from the request body
+    public int addWatchlist(final int uId, final Watchlist watchlist) throws SQLException {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        template.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(SQL_USER_WATCHLIST_INSERT,
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, watchlist.getwName());
+            ps.setInt(2, uId);
+            return ps;
+        }, keyHolder);
+
+        try {
+            return keyHolder.getKey().intValue();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            throw new SQLException(e);
+        }
+    }
+
+    public boolean updateWatchlist(final int wId, Watchlist watchlist) {
+        int updated = template.update(SQL_WATCHLIST_UPDATE_BY_ID,
+                watchlist.getwName(),
+                wId);
+
+        return updated > 0;
+    }
+
+    public boolean deleteWatchlist(final int wId) {
+        int deleted = template.update(SQL_WATCHLIST_DELETE_BY_ID, wId);
         return deleted > 0;
     }
 }
