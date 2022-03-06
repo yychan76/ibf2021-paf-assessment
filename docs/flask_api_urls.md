@@ -6,7 +6,7 @@ These are information reshaped from those provided by the  [yfinance](https://py
 
 ### Motivation
 
-The free tier of 3rd party API providers of Yahoo Finance data via RapidAPI.com is too low. Yahoo stopped providing their finance API and there are scammer sites out there done in React collecting payment via Stripe that claims to provide Yahoo Finance data https://www.scamadviser.com/check-website/yahoofinanceapi.com
+The free tier of 3rd party API providers of Yahoo Finance data via RapidAPI.com is too low. Yahoo stopped providing their finance API and there are scammer sites out there done in React collecting payment via Stripe that claims to provide Yahoo Finance data <https://www.scamadviser.com/check-website/yahoofinanceapi.com>
 
 ## 1. Stock info
 
@@ -189,7 +189,6 @@ end: If not using period - Download end date string (YYYY-MM-DD) or datetime.
 ```
 
 When using `period`, don't use `start` and `end` dates. Also `yfinance` seems to have a bug where the last record returned when using start and end dates does not fall within the period between start and end.
-
 
 example
 
@@ -523,4 +522,5 @@ example
 ```
 
 ### Notes
+
 - `timestamp` is POSIX timestamp as float
