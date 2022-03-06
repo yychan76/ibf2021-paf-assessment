@@ -34,7 +34,7 @@ import ibf.paf.portfolio.services.UserService;
 @RequestMapping(path = "/api/users", produces = { MediaType.APPLICATION_JSON_VALUE })
 public class UsersRestController {
     private static final Logger LOG = Logger.getLogger(UsersRestController.class.getName());
-    JsonMapper jsonMapper = new JsonMapper();
+    private JsonMapper jsonMapper = new JsonMapper();
 
     @Autowired
     private UserService userSvc;

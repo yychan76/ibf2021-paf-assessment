@@ -34,7 +34,7 @@ import ibf.paf.portfolio.services.WatchlistService;
 @RequestMapping(path = "/api/users/{uId}/watchlists", produces = { MediaType.APPLICATION_JSON_VALUE })
 public class UserWatchlistRestController {
     private static final Logger LOG = Logger.getLogger(UserWatchlistRestController.class.getName());
-    JsonMapper jsonMapper = new JsonMapper();
+    private JsonMapper jsonMapper = new JsonMapper();
 
     @Autowired
     private WatchlistService watchlistSvc;

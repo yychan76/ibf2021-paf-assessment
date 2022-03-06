@@ -19,6 +19,8 @@ public class WatchlistService {
     @Autowired
     private PortfolioDBRepository portfolioRepo;
 
+    // # Watchlists
+
     public List<Watchlist> getAllWatchlists(final int uId) {
         return portfolioRepo.getAllWatchlists(uId);
     }
@@ -38,6 +40,8 @@ public class WatchlistService {
     public boolean deleteWatchlist(final int wId) {
         return portfolioRepo.deleteWatchlist(wId);
     }
+
+    // # Watchlist Stocks
 
     public List<ShareCounter> getAllWatchlistStocks(final int wId) {
         return portfolioRepo.getAllWatchlistStocks(wId);

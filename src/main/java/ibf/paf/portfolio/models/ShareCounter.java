@@ -112,4 +112,11 @@ public class ShareCounter {
         watchlist.setwId(rs.getInt("w_id"));
         return watchlist;
     }
+
+    @Override
+    public String toString() {
+        return "ShareCounter [currency=" + currency + ", currentPrice=" + currentPrice + ", dividends=" + dividends
+                + ", name=" + name + ", prices=" + prices + ", region=" + region + ", splits=" + splits + ", symbol="
+                + symbol + ", type=" + type + ", wId=" + wId + ", wsId=" + wsId + "]";
+    }
 }
