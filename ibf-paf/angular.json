@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "projects": {
+    "client-app": "apps/client-app",
+    "client-app-e2e": "apps/client-app-e2e",
+    "core-data": "libs/core-data",
+    "core-state": "libs/core-state",
+    "material": "libs/material"
+  }
+}
