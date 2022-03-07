@@ -8,7 +8,7 @@
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/client-app",
+        "outputPath": "../src/main/resources",
         "index": "apps/client-app/src/index.html",
         "main": "apps/client-app/src/main.ts",
         "polyfills": "apps/client-app/src/polyfills.ts",
@@ -58,10 +58,12 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "client-app:build:production"
+          "browserTarget": "client-app:build:production",
+          "proxyConfig": "apps/client-app/src/proxy.conf.json"
         },
         "development": {
-          "browserTarget": "client-app:build:development"
+          "browserTarget": "client-app:build:development",
+          "proxyConfig": "apps/client-app/src/proxy.conf.json"
         }
       },
       "defaultConfiguration": "development"

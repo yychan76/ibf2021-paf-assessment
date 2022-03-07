@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "api-interfaces": "libs/api-interfaces",
     "client-app": "apps/client-app",
     "client-app-e2e": "apps/client-app-e2e",
     "core-data": "libs/core-data",

@@ -1,0 +1,45 @@
+<!-- <p>watchlist-detail works!</p> -->
+
+<h1>Watchlist</h1>
+
+<div class="watchlist-detail" *ngIf="watchlist$ | async">
+  <h2>{{ (watchlist$ | async)?.wName }}</h2>
+</div>
+
+<!-- <pre>{{ watchlist$ | async | json }}</pre> -->
+
+<ibf-paf-symbol-search
+  [addButtonSuffix]="' To Watchlist'"
+  (selectedSymbol)="addSymbolToWatchlist($event)"
+></ibf-paf-symbol-search>
+
+<!-- <pre> {{ stocks$ | async | json }}</pre> -->
+
+<div *ngFor="let stock of stocks$ | async">
+  <mat-card>
+    <mat-card-title
+      >{{ stock.symbol }}
+      <span class="curr-price"
+        >{{ stock.currentPrice | currency: stock.currency }}
+      </span>
+      <span [class]="getPriceClass(stock.priceChange)">
+        <span class="price-change">  {{ stock.priceChange | currency }} </span>
+        <span class="percent-change">
+          ({{ stock.priceChange / stock.previousClose | percent }})
+        </span>
+      </span>
+    </mat-card-title>
+    <mat-card-subtitle
+      >Previous Close: {{ stock.previousClose | currency }}
+    </mat-card-subtitle>
+    <mat-card-subtitle>Name: {{ stock.name }}</mat-card-subtitle>
+    <mat-card-subtitle>Type: {{ stock.type }}</mat-card-subtitle>
+    <mat-card-subtitle>Region: {{ stock.region }}</mat-card-subtitle>
+    <mat-card-subtitle>Currency: {{ stock.currency }}</mat-card-subtitle>
+    <mat-card-actions>
+      <button mat-button (click)="removeSymbolFromWatchlist(stock)">
+        Remove
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

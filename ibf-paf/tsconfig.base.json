@@ -15,6 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@env/*": ["apps/client-app/src/environments/*"],
+      "@ibf-paf/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@ibf-paf/core-data": ["libs/core-data/src/index.ts"],
       "@ibf-paf/core-state": ["libs/core-state/src/index.ts"],
       "@ibf-paf/material": ["libs/material/src/index.ts"]

@@ -1,0 +1,21 @@
+<!-- <p>watchlist works!</p> -->
+<!--
+<pre>{{ watchlists$ | async  | json}}</pre>
+
+<div *ngFor="let watchlist of watchlists$ | async">
+  <mat-card class="example-card">
+    <mat-card-title-group>
+      <mat-card-title>{{ watchlist.wName }}</mat-card-title>
+      <mat-card-subtitle>todo</mat-card-subtitle>
+    </mat-card-title-group>
+    <mat-card-content>
+      {{ watchlist.wName }}
+    </mat-card-content>
+  </mat-card>
+</div> -->
+
+<mat-selection-list #watchlists [multiple]="false">
+  <mat-list-option *ngFor="let watchlist of watchlists$ | async" [value]="watchlist" [routerLink]="['/watchlist', watchlist.wId]">
+    {{watchlist.wName}}
+  </mat-list-option>
+</mat-selection-list>
