@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Route } from '@angular/router';
 import { CoreDataModule } from '@ibf-paf/core-data';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -11,12 +10,10 @@ import * as fromPortfolio from './portfolio/portfolio.reducer';
 import { PortfolioEffects } from './portfolio/portfolio.effects';
 import { PortfolioFacade } from './portfolio/portfolio.facade';
 
-export const coreStateRoutes: Route[] = [];
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule,
     CoreDataModule,
     StoreModule.forFeature(
       fromWatchlist.WATCHLIST_FEATURE_KEY,

@@ -15,7 +15,23 @@
 </div> -->
 
 <mat-selection-list #watchlists [multiple]="false">
-  <mat-list-option *ngFor="let watchlist of watchlists$ | async" [value]="watchlist" [routerLink]="['/watchlist', watchlist.wId]">
-    {{watchlist.wName}}
+  <mat-list-option
+    *ngFor="let watchlist of watchlists$ | async"
+    [value]="watchlist"
+    [routerLink]="['/watchlist', watchlist.wId]"
+    (click)="onSelect(watchlist.wId)"
+  >
+    {{ watchlist.wName }}
   </mat-list-option>
 </mat-selection-list>
+
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-form-field appearance="standard">
+    <mat-label>Watchlist Name</mat-label>
+    <input matInput placeholder="Stock search" formControlName="watchlistname">
+    <mat-hint>Create a new watchlist</mat-hint>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Add Watchlist</button>
+</form>

@@ -11,9 +11,16 @@ import { Observable } from 'rxjs';
 export class WatchlistService {
   auth$!: Observable<AppState>;
   model = 'watchlists';
+  uId!: string;
+  authState: any;
 
   constructor(private http: HttpClient, private store: Store) {
     this.auth$ = this.store.select(selectAuthState);
+    this.auth$.subscribe((state) => {
+      this.authState = {...state};
+      console.log('this user ', this.authState, this.authState.user.uId);
+      this.uId = this.authState.user.uId;
+    });
   }
 
   all() {
@@ -25,19 +32,21 @@ export class WatchlistService {
   }
 
   create(watchlist: Watchlist) {
+    console.log('Creating: watchlist', watchlist);
+    console.log(this.getUrl());
     return this.http.post(this.getUrl(), watchlist);
   }
 
   update(watchlist: Watchlist) {
-    return this.http.put(this.getUrlWithId(watchlist.wId), watchlist);
+    return this.http.put(this.getUrlWithId(watchlist.wId || ""), watchlist);
   }
 
   delete(watchlist: Watchlist) {
-    return this.http.delete(this.getUrlWithId(watchlist.wId));
+    return this.http.delete(this.getUrlWithId(watchlist.wId || ""));
   }
 
   private getUrl() {
-    return `${environment.apiEndpoint}users/15/${this.model}`;
+    return `${environment.apiEndpoint}users/${this.uId}/${this.model}`;
   }
 
   private getUrlWithId(id: string): string {

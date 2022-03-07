@@ -2,10 +2,10 @@ export interface BaseEntity {
   id: string | null;
 }
 
-export interface Watchlist extends BaseEntity {
-  wId: string;
-  wName: string;
-  stocks: string[];
+export interface Watchlist {
+  wId?: string;
+  wName?: string;
+  stocks?: string[];
 }
 
 export interface User {
@@ -15,7 +15,7 @@ export interface User {
   avatarUrl: string;
 }
 
-export interface Symbol {
+export interface StockSymbol {
   symbol: string;
   name: string;
   type: string;
@@ -39,8 +39,8 @@ export interface ShareCounter {
   wId?: string;
 }
 
-export interface Portfolio extends BaseEntity {
-  pId: string;
-  pName: string;
-  stocks: string[];
+export interface Portfolio {
+  pId?: string;
+  pName?: string;
+  stocks?: string[];
 }

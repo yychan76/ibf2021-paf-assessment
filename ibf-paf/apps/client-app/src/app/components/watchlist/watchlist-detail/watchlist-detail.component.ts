@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ShareCounter } from '@ibf-paf/api-interfaces';
 import { WatchlistService, WatchlistStockService } from '@ibf-paf/core-data';
-import { AppState, selectAuthState } from '@ibf-paf/core-state';
+import { AppState, selectAuthState, selectNavState, selectWatchlist } from '@ibf-paf/core-state';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
@@ -13,19 +13,23 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class WatchlistDetailComponent implements OnInit, OnDestroy {
   auth$!: Observable<AppState>;
+  nav$!: Observable<AppState>;
   watchlist$!: Observable<any>;
   stocks$!: Observable<any>;
   wId!: string;
   createSub!: Subscription;
   deleteSub!: Subscription;
 
+
   constructor(
     private store: Store,
     private watchlistService: WatchlistService,
     private watchlistStockService: WatchlistStockService,
-    private activatedRoute: ActivatedRoute
-  ) {
-    this.auth$ = this.store.select(selectAuthState);
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+    ) {
+      this.auth$ = this.store.select(selectAuthState);
+      this.nav$ = this.store.select(selectNavState);
   }
 
   ngOnInit(): void {
@@ -69,5 +73,16 @@ export class WatchlistDetailComponent implements OnInit, OnDestroy {
 
   getPriceClass(change: number) {
     return { gain: change > 0, loss: change < 0 };
+  }
+
+  onDelete() {
+    this.watchlistService.delete({wId: this.wId}).subscribe((result) => {
+      console.log(result);
+      this.goBack();
+    })
+  }
+
+  goBack() {
+    this.router.navigate(['/watchlist'])
   }
 }

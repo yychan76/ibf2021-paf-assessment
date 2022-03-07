@@ -11,22 +11,30 @@ import * as fromWatchlistActions from './lib/watchlist/watchlist.actions';
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 export * from './lib/core-state.module';
 export { login, loginSuccess, logout } from './lib/store/actions/auth.actions';
+export {
+  selectWatchlist,
+  selectPortfolio,
+  selectPortfolioStock,
+} from './lib/store/actions/nav.actions';
 
 import * as auth from './lib/store/reducers/auth.reducers';
+import * as nav from './lib/store/reducers/nav.reducers';
 
 // update shape of entire app state
 export interface AppState {
   portfolios: fromPortfolioReducer.State;
   watchlist: fromWatchlistReducer.State;
   authState: auth.State;
+  navState: nav.State;
 }
 
 export const reducers = {
-  auth: auth.authReducer
+  auth: auth.authReducer,
+  nav: nav.navReducer
 };
 
 export const selectAuthState = createFeatureSelector<AppState>('auth');
-
+export const selectNavState = createFeatureSelector<AppState>('nav');
 
 // add in feature reducers to combined reducer
 // export const reducers: ActionReducerMap<AppState> = {
