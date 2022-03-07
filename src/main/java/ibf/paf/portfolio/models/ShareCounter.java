@@ -11,6 +11,8 @@ public class ShareCounter {
     private String region;
     private String currency;
     private float currentPrice;
+    private float previousClose;
+    private float priceChange;
     private List<Price> prices;
     private List<Dividend> dividends;
     private List<Split> splits;
@@ -20,6 +22,7 @@ public class ShareCounter {
     public String getSymbol() {
         return symbol;
     }
+
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
@@ -63,7 +66,26 @@ public class ShareCounter {
 
     public void setCurrentPrice(float currentPrice) {
         this.currentPrice = currentPrice;
+        this.updatePriceChange();
     }
+
+    public float getPreviousClose() {
+        return previousClose;
+    }
+
+    public void setPreviousClose(float previousClose) {
+        this.previousClose = previousClose;
+        this.updatePriceChange();
+    }
+
+    public float getPriceChange() {
+        return priceChange;
+    }
+
+    public void setPriceChange(float priceChange) {
+        this.priceChange = priceChange;
+    }
+
 
     public List<Price> getPrices() {
         return prices;
@@ -111,6 +133,10 @@ public class ShareCounter {
         watchlist.setSymbol(rs.getString("symbol"));
         watchlist.setwId(rs.getInt("w_id"));
         return watchlist;
+    }
+
+    private void updatePriceChange() {
+        this.priceChange = this.currentPrice - this.previousClose;
     }
 
     @Override
