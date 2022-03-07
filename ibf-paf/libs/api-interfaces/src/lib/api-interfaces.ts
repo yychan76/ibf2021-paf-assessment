@@ -39,6 +39,13 @@ export interface ShareCounter {
   wId?: string;
 }
 
+export interface Stock extends ShareCounter {
+  totalQuantity?: number;
+  totalValue?: number;
+  psId?: string;
+  pId?: string;
+}
+
 export interface Portfolio {
   pId?: string;
   pName?: string;

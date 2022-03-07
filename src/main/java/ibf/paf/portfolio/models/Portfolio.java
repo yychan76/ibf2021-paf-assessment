@@ -50,4 +50,9 @@ public class Portfolio {
         return portfolio;
     }
 
+    @Override
+    public String toString() {
+        return "Portfolio [pId=" + pId + ", pName=" + pName + ", stocks=" + stocks + ", uId=" + uId + "]";
+    }
+
 }

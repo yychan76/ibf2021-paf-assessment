@@ -51,6 +51,7 @@ export class WatchlistComponent implements OnInit {
     console.log(watchlist);
     this.watchlistService.create(watchlist).subscribe((result) => {
       console.log(result);
+      this.form.reset();
       this.fetchAllWatchlists();
     });
   }

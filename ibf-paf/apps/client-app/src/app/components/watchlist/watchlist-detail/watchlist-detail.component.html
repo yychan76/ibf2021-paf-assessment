@@ -40,7 +40,7 @@
                 {{ stock.priceChange | currency }}
               </span>
               <span class="percent-change">
-                ({{ stock.priceChange / stock.previousClose | percent }})
+                ({{ stock.previousClose !== 0 ? stock.priceChange / stock.previousClose : 0  | percent  }})
               </span>
             </span>
           </mat-card-title>

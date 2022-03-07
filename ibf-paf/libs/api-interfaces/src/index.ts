@@ -1,1 +1,8 @@
-export { User, Portfolio, Watchlist, StockSymbol, ShareCounter } from './lib/api-interfaces';
+export {
+  User,
+  Portfolio,
+  Watchlist,
+  StockSymbol,
+  ShareCounter,
+  Stock,
+} from './lib/api-interfaces';

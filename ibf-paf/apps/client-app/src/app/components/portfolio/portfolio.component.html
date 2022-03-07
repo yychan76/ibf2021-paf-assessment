@@ -1,1 +1,37 @@
-<p>portfolio works!</p>
+<!-- <p>portfolio works!</p> -->
+<!--
+<pre>{{ portfolio$ | async  | json}}</pre>
+
+<div *ngFor="let portfolio of portfolio$ | async">
+  <mat-card class="example-card">
+    <mat-card-title-group>
+      <mat-card-title>{{ portfolio.wName }}</mat-card-title>
+      <mat-card-subtitle>todo</mat-card-subtitle>
+    </mat-card-title-group>
+    <mat-card-content>
+      {{ portfolio.wName }}
+    </mat-card-content>
+  </mat-card>
+</div> -->
+
+<mat-selection-list #portfolio [multiple]="false">
+  <mat-list-option
+    *ngFor="let portfolio of portfolio$ | async"
+    [value]="portfolio"
+    [routerLink]="['/portfolio', portfolio.pId]"
+    (click)="onSelect(portfolio.pId)"
+  >
+    {{ portfolio.pName }}
+  </mat-list-option>
+</mat-selection-list>
+
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <mat-form-field appearance="standard">
+    <mat-label>Portfolio Name</mat-label>
+    <input matInput placeholder="Stock search" formControlName="portfolioname">
+    <mat-hint>Create a new portfolio</mat-hint>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Add Portfolio</button>
+</form>

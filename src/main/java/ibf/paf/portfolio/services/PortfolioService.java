@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +20,18 @@ import ibf.paf.portfolio.repositories.PortfolioDBRepository;
 @Service
 public class PortfolioService {
     private static final Logger LOG = Logger.getLogger(PortfolioService.class.getName());
+    // need to add the jackson-datatype-jsr310 module to support ZonedDateTime
+    // serialization
+    // also need to provide ZonedDateTimeSerializer in the Dividend, Price, Split POJO
+    private JsonMapper jsonMapper = JsonMapper.builder()
+            .findAndAddModules()
+            .build();
 
     @Autowired
     private PortfolioDBRepository portfolioRepo;
+
+    @Autowired
+    private StockDataService stockDataSvc;
 
     // # Portfolios
 
@@ -45,7 +58,37 @@ public class PortfolioService {
     // # Portfolio Stocks
 
     public List<Stock> getAllPortfolioStocks(final int pId) {
-        return portfolioRepo.getAllPortfolioStocks(pId);
+        // return portfolioRepo.getAllPortfolioStocks(pId);
+        List<Stock> stocks = portfolioRepo.getAllPortfolioStocks(pId);
+        return stocks.stream()
+            .map(item -> {
+                String symbol = item.getSymbol();
+                String stockInfoStr = stockDataSvc.passThroughStockInfo(symbol).block();
+                // List<Dividend> dividends = stockDataSvc.getDividends(symbol).block();
+                // List<Split> splits = stockDataSvc.getSplits(symbol).block();
+                // List<Price> prices = stockDataSvc.getPrices(symbol).block();
+
+                try {
+                    JsonNode infoNode = jsonMapper.readTree(stockInfoStr);
+                    // LOG.info(infoNode.toString());
+                    // LOG.info("currentPrice:" + infoNode.get("currentPrice").floatValue());
+
+                    item.setCurrentPrice(infoNode.get("currentPrice") != null ? (float)infoNode.get("currentPrice").asDouble() : 0);
+                    item.setPreviousClose(infoNode.get("previousClose") != null ? (float)infoNode.get("previousClose").asDouble() : 0);
+                    item.setCurrency(infoNode.get("currency") != null ? infoNode.get("currency").asText() : "");
+                    item.setRegion(infoNode.get("country") != null ? infoNode.get("country").asText() : "");
+                    item.setName(infoNode.get("longName") != null ? infoNode.get("longName").asText() : "");
+                    item.setType(infoNode.get("quoteType") != null ? infoNode.get("quoteType").asText() : "");
+                    // item.setDividends(dividends);
+                    // item.setSplits(splits);
+                    // item.setPrices(prices);
+                } catch (JsonProcessingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                return item;
+            }).toList();
     }
 
     public Optional<Stock> getPortfolioStockById(final int psId) {
