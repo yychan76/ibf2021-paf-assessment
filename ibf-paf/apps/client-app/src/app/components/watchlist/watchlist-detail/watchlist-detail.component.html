@@ -14,10 +14,12 @@
   *ngIf="watchlist$ | async"
 >
   <h2>{{ (watchlist$ | async)?.wName }}</h2>
-  <button mat-stroked-button color="warn" (click)="onDelete()"><mat-icon>delete</mat-icon></button>
+  <button mat-stroked-button color="warn" (click)="onDelete()">
+    <mat-icon>delete</mat-icon>
+  </button>
 </div>
 
-<div fxLayout="row wrap" fxLayoutGap="20px">
+<div fxLayout="row" fxLayoutGap="20px">
   <ibf-paf-symbol-search
     [addButtonSuffix]="' To Watchlist'"
     (selectedSymbol)="addSymbolToWatchlist($event)"
@@ -40,7 +42,12 @@
                 {{ stock.priceChange | currency }}
               </span>
               <span class="percent-change">
-                ({{ stock.previousClose !== 0 ? stock.priceChange / stock.previousClose : 0  | percent  }})
+                ({{
+                  (stock.previousClose !== 0
+                    ? stock.priceChange / stock.previousClose
+                    : 0
+                  ) | percent
+                }})
               </span>
             </span>
           </mat-card-title>

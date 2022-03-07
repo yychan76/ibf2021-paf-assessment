@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'watchlist/:wId', component: WatchlistDetailComponent },
   { path: 'portfolio', component: PortfolioComponent },
   { path: 'portfolio/:pId', component: PortfolioDetailComponent },
-  { path: 'portfolio/:pId/stock/:sId', component: TransactionComponent },
+  { path: 'portfolio/:pId/stock/:psId', component: TransactionComponent },
 
   { path: '**', redirectTo: '/', pathMatch: 'full' },
 ];

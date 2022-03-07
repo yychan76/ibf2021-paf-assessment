@@ -19,7 +19,7 @@
   </button>
 </div>
 
-<div fxLayout="row wrap" fxLayoutGap="20px">
+<div fxLayout="row" fxLayoutGap="20px">
   <ibf-paf-symbol-search
     [addButtonSuffix]="' To Portfolio'"
     (selectedSymbol)="addSymbolToPortfolio($event)"
@@ -41,11 +41,19 @@
               <span class="price-change">
                 {{ stock.priceChange | currency }}
               </span>
-              <span class="percent-change" >
-                ({{ stock.previousClose !== 0 ? stock.priceChange / stock.previousClose : 0  | percent }})
+              <span class="percent-change">
+                ({{
+                  (stock.previousClose !== 0
+                    ? stock.priceChange / stock.previousClose
+                    : 0
+                  ) | percent
+                }})
               </span>
             </span>
           </mat-card-title>
+          <mat-card-subtitle
+            >Total Value: {{ stock.totalValue | currency }} Shares: {{ stock.totalQuantity | number }}
+          </mat-card-subtitle>
           <mat-card-subtitle
             >Previous Close: {{ stock.previousClose | currency }}
           </mat-card-subtitle>
@@ -56,6 +64,9 @@
           <mat-card-actions>
             <button mat-button (click)="removeSymbolFromPortfolio(stock)">
               Remove
+            </button>
+            <button mat-button [routerLink]="['stock', stock.psId ]">
+              Add Transaction
             </button>
           </mat-card-actions>
         </mat-card>
