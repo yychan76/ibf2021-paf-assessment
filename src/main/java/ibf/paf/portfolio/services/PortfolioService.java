@@ -83,6 +83,7 @@ public class PortfolioService {
         // List<Split> splits = stockDataSvc.getSplits(symbol).block();
         // List<Price> prices = stockDataSvc.getPrices(symbol).block();
 
+
         try {
             JsonNode infoNode = jsonMapper.readTree(stockInfoStr);
             // LOG.info(infoNode.toString());
@@ -103,6 +104,8 @@ public class PortfolioService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        List<Transaction> transactions = portfolioRepo.getAllPortfolioStockTransactions(stock.getPsId());
+        stock.setTransactions(transactions);
         return stock;
     }
 
